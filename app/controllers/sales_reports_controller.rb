@@ -2,7 +2,17 @@ class SalesReportsController < ApplicationController
   def index
     render json: {
       sales_total: sales_calculator.sales_total(params),
-      weekly_sales_total: weekly_sales_calculator.weekly_sales_total(params),
+    }
+  end
+
+  def weekly_sales_total
+      render json: {
+        weekly_sales_total: weekly_sales_calculator.weekly_sales_total(params)
+      }
+  end
+
+  def expense_total
+    render json: {
       expense_total: expense_calculator.expense_total(params)
     }
   end
@@ -43,8 +53,10 @@ end
 
 class ExpenseCalculator
   def expense_total(params)
+    start_date = Date.parse(params[:starting]) rescue Date.today
+    end_date = Date.parse(params[:ending]) rescue start_date
     Expense
-      .where(date: (Date.parse(params[:starting])..Date.parse(params[:ending])))
+      .where(date: (start_date..end_date))
       .sum("cost")
   end
 end

@@ -49,25 +49,19 @@ end
 
 class SalesCalculator
   def sales_total(date_range)
-    Sale
-      .where(date: date_range)
-      .sum("cost")
+    Sale.costs_within(date_range)
   end
 end
 
 class WeeklySalesCalculator
   def weekly_sales_total(date_range)
-    Sale
-      .where(date: date_range)
-      .sum("cost")
+    Sale.costs_within(date_range)
   end
 end
 
 class ExpenseCalculator
   def expense_total(date_range)
-    Expense
-      .where(date: date_range)
-      .sum("cost")
+    Expense.costs_within(date_range)
   end
 end
 
